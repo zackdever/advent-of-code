@@ -1,5 +1,4 @@
 import math
-import unittest
 
 
 def calculate_fuel(mass):
@@ -16,14 +15,7 @@ def sum_fuel(mass_file):
     return fuelsum
 
 
-class FuelCounterTest(unittest.TestCase):
-    def test_examples(self):
-        self.assertEqual(calculate_fuel(12), 2)
-        self.assertEqual(calculate_fuel(14), 2)
-        self.assertEqual(calculate_fuel(1969), 966)
-        self.assertEqual(calculate_fuel(100756), 50346)
-
 if __name__ == '__main__':
-    f = 'input.txt'
+    f = './input/day1.txt'
     print('Reading from {}'.format(f))
     print('Total fuel sum: {}'.format(sum_fuel(f)))

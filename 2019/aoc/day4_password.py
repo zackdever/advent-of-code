@@ -18,32 +18,35 @@ How many different passwords within the range given in your puzzle input meet th
 Your puzzle input is 158126-624574.
 """
 
-code_range = [158126, 624574]
 
-count = 0
-for i in range(code_range[0], code_range[1]+1):
-    # assuming they're all six digits
-    code = str(i)
+def password_count(code_range):
+    count = 0
+    for i in range(code_range[0], code_range[1]+1):
+        # assuming they're all six digits
+        code = str(i)
 
-    # check that each number does not decrease, and repeat requirement
-    prev_ch = code[0]
-    decrease, double = False, False
-    repeat_count = 0
-    for ch in code[1:]:
-        if prev_ch < ch:
-            prev_ch = ch
-            if repeat_count == 1:
-                double = True
-            repeat_count = 0
-        elif prev_ch == ch:
-            repeat_count += 1
-        else:
-            # don't worry about repeat, b/c we fail
-            decrease = True
-            break 
+        # check that each number does not decrease, and repeat requirement
+        prev_ch = code[0]
+        decrease, double = False, False
+        repeat_count = 0
+        for ch in code[1:]:
+            if prev_ch < ch:
+                prev_ch = ch
+                if repeat_count == 1:
+                    double = True
+                repeat_count = 0
+            elif prev_ch == ch:
+                repeat_count += 1
+            else:
+                # don't worry about repeat, b/c we fail
+                decrease = True
+                break 
 
-    if (repeat_count == 1 or double) and not decrease:
-        print(i)
-        count += 1
+        if (repeat_count == 1 or double) and not decrease:
+            count += 1
+    return count
 
-print(count)
+
+if __name__ == '__main__':
+    code_range = [158126, 624574]
+    print(password_count(code_range))
