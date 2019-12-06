@@ -5,6 +5,7 @@ from aoc import day2_program_alarm as d2
 from aoc import day3_distance as d3
 from aoc import day4_password as d4
 from aoc import day5_diagnostic as d5
+from aoc import day6_orbit_checksum as d6
 
 class AOCTest(unittest.TestCase):
 
@@ -49,3 +50,8 @@ class AOCTest(unittest.TestCase):
         code = [3,3,1105,-1,9,1101,0,0,12,4,12,99,1]
         self.assertEqual(d5.diagnostic_program(code.copy(), 0), [0])
         self.assertEqual(d5.diagnostic_program(code.copy(), 42), [1])
+
+    def test_d6_orbit_checksum(self):
+        orbits = ['COM)B', 'B)C', 'C)D', 'D)E', 'E)F', 'B)G',
+                  'G)H', 'D)I', 'E)J', 'J)K', 'K)L']
+        self.assertEqual(d6.orbit_checksum(orbits), 42)
