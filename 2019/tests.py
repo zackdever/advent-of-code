@@ -55,3 +55,7 @@ class AOCTest(unittest.TestCase):
         orbits = ['COM)B', 'B)C', 'C)D', 'D)E', 'E)F', 'B)G',
                   'G)H', 'D)I', 'E)J', 'J)K', 'K)L']
         self.assertEqual(d6.orbit_checksum(orbits), 42)
+
+        orbits = ['COM)B', 'B)C', 'C)D', 'D)E', 'E)F', 'B)G',
+                  'G)H', 'D)I', 'E)J', 'J)K', 'K)L', 'K)YOU', 'I)SAN']
+        self.assertEqual(d6.min_orbital_transfers(orbits), 4)
