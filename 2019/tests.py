@@ -40,16 +40,16 @@ class AOCTest(unittest.TestCase):
     def test_d4_password_count(self):
         pass # TODO
 
-    def test_d5_diagnostic_program(self):
+    def test_d5_intcode(self):
         # jump: position / index mode
         code = [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9]
-        self.assertEqual(d5.diagnostic_program(code.copy(), 0), [0])
-        self.assertEqual(d5.diagnostic_program(code.copy(), 42), [1])
+        self.assertEqual(d5.intcode(code, [0]), [0])
+        self.assertEqual(d5.intcode(code, [42]), [1])
 
         # jump: immediate / value mode
         code = [3,3,1105,-1,9,1101,0,0,12,4,12,99,1]
-        self.assertEqual(d5.diagnostic_program(code.copy(), 0), [0])
-        self.assertEqual(d5.diagnostic_program(code.copy(), 42), [1])
+        self.assertEqual(d5.intcode(code, [0]), [0])
+        self.assertEqual(d5.intcode(code, [42]), [1])
 
     def test_d6_orbit_checksum(self):
         orbits = ['COM)B', 'B)C', 'C)D', 'D)E', 'E)F', 'B)G',

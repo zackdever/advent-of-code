@@ -51,7 +51,9 @@ def get_param(code, i, mode):
     return code[i] if mode == ParamMode.VALUE else code[code[i]]
 
 
-def diagnostic_program(code, input_val):
+def intcode(code, input_vals):
+    input_vals = list(reversed(input_vals))
+    code = code.copy()
     # Parameters that an instruction writes to will never be in immediate mode.
     # This does not include output though, only writes back to the code!
     output = []
@@ -80,7 +82,7 @@ def diagnostic_program(code, input_val):
             outi = code[i+1]
             i += 1
             if opcode == OpCode.INPUT:
-                code[outi] = input_val
+                code[outi] = input_vals.pop()
             else:
                 output.append(get_param(code, i, modes.pop()))
         elif opcode in (OpCode.JUMP_IF_TRUE, OpCode.JUMP_IF_FALSE):
@@ -105,7 +107,7 @@ if __name__ == '__main__':
     with open(fp) as f:
         code = [int(x) for x in f.read().strip().split(',')]
 
-    output = diagnostic_program(code, input_val)
+    output = intcode(code, [input_val])
     for val in output[:-1]:
         if val != 0:
             print('Houston, we have a problem')
