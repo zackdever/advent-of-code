@@ -6,6 +6,7 @@ from aoc import day3_distance as d3
 from aoc import day4_password as d4
 from aoc import day5_diagnostic as d5
 from aoc import day6_orbit_checksum as d6
+from aoc import day7_amp_circuit as d7
 
 class AOCTest(unittest.TestCase):
 
@@ -59,3 +60,18 @@ class AOCTest(unittest.TestCase):
         orbits = ['COM)B', 'B)C', 'C)D', 'D)E', 'E)F', 'B)G',
                   'G)H', 'D)I', 'E)J', 'J)K', 'K)L', 'K)YOU', 'I)SAN']
         self.assertEqual(d6.min_orbital_transfers(orbits), 4)
+
+    def test_d7_amp_circuit(self):
+        # phase setting sequence 4,3,2,1,0
+        code = [3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0]
+        self.assertEqual(d7.max_thruster_signal(code), 43210)
+
+        # phase setting sequence 0,1,2,3,4
+        code = [3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,
+                24,23,23,4,23,99,0,0]
+        self.assertEqual(d7.max_thruster_signal(code), 54321)
+
+        # phase setting sequence 1,0,4,3,2
+        code = [3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,
+                1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0]
+        self.assertEqual(d7.max_thruster_signal(code), 65210)
