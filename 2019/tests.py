@@ -109,4 +109,9 @@ class AOCTest(unittest.TestCase):
         code = '123456789012'
         width, height = 3, 2
         expected = [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [0, 1, 2]]]
-        self.assertEqual(d8.layers(code, width, height), expected)
+        self.assertEqual(d8.build_layers(code, width, height), expected)
+
+        code = '0222112222120000'
+        width, height = 2, 2
+        layers = d8.build_layers(code, width, height)
+        self.assertEqual(d8.flatten_layers(layers), [[0, 1], [1, 0]])

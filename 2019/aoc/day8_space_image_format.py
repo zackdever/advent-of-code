@@ -58,6 +58,39 @@ def checksum(layers):
     return target[1] * target[2]
 
 
+def flatten_layers(layers):
+    """
+    First layer in front, last layer in back.
+    0 is black, 1 is white, and 2 is transparent.
+    The final value for a position is the first visible (non-transparent) value.
+    """
+    final = []
+    width, height = len(layers[0][0]), len(layers[0])
+    layer_count = len(layers)
+    for row in range(height):
+        final_row = []
+        for col in range(width):
+            visible = 2 # default, in case they're all transparent
+            for i in range(layer_count):
+                if layers[i][row][col] != 2:
+                    visible = layers[i][row][col]
+                    break
+            final_row.append(visible)
+        final.append(final_row)
+    return final
+
+def print_image(data, width, height):
+    def render(digit):
+        if digit == 0:
+            return '\u2B1B' # black
+        elif digit == 1:
+            return '\u2B1C' # white
+        return ' ' #clear
+
+    for row in flatten_layers(build_layers(data, width, height)):
+        print(''.join(render(digit) for digit in row))
+
+
 if __name__ == '__main__':
     fp = 'input/day8.txt'
     with open(fp) as f:
@@ -65,3 +98,4 @@ if __name__ == '__main__':
     width, height = 25, 6
     layers = build_layers(data, width, height)
     print('Image checksum: {}'.format(checksum(layers)))
+    print_image(data, width, height)
