@@ -1,3 +1,4 @@
+import queue
 import unittest
 
 from aoc import day1_fuel_counter as d1
@@ -42,15 +43,29 @@ class AOCTest(unittest.TestCase):
         pass # TODO
 
     def test_d5_intcode(self):
+        def queue_helper(code, in_msg):
+            in_q = queue.SimpleQueue()
+            in_q.put(in_msg)
+            out_q = queue.SimpleQueue()
+            d5.intcode(code, in_q, out_q)
+            out = []
+            while not out_q.empty():
+                out.append(out_q.get())
+            return out
+
         # jump: position / index mode
         code = [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9]
-        self.assertEqual(d5.intcode(code, [0]), [0])
-        self.assertEqual(d5.intcode(code, [42]), [1])
+        out = queue_helper(code, 0)
+        self.assertEqual(out, [0])
+        out = queue_helper(code, 42)
+        self.assertEqual(out, [1])
 
         # jump: immediate / value mode
         code = [3,3,1105,-1,9,1101,0,0,12,4,12,99,1]
-        self.assertEqual(d5.intcode(code, [0]), [0])
-        self.assertEqual(d5.intcode(code, [42]), [1])
+        out = queue_helper(code, 0)
+        self.assertEqual(out, [0])
+        out = queue_helper(code, 42)
+        self.assertEqual(out, [1])
 
     def test_d6_orbit_checksum(self):
         orbits = ['COM)B', 'B)C', 'C)D', 'D)E', 'E)F', 'B)G',

@@ -1,6 +1,7 @@
 # https://adventofcode.com/2019/day/5
 
 from enum import IntEnum
+from queue import SimpleQueue
 
 
 class OpCode(IntEnum):
@@ -51,12 +52,17 @@ def get_param(code, i, mode):
     return code[i] if mode == ParamMode.VALUE else code[code[i]]
 
 
-def intcode(code, input_vals):
-    input_vals = list(reversed(input_vals))
+def intcode(code, msg_in, msg_out):
+    """
+    code: sequence of int codes
+    msg_in: queue for messages in
+    msg_out: queue for messages out
+    
+    Does not return any values, but stops on HALT.
+    """
     code = code.copy()
     # Parameters that an instruction writes to will never be in immediate mode.
     # This does not include output though, only writes back to the code!
-    output = []
     i = 0 # instruction pointer
     while i < len(code):
         modes, opcode = modes_and_opcode(code[i])
@@ -82,9 +88,9 @@ def intcode(code, input_vals):
             outi = code[i+1]
             i += 1
             if opcode == OpCode.INPUT:
-                code[outi] = input_vals.pop()
+                code[outi] = msg_in.get()
             else:
-                output.append(get_param(code, i, modes.pop()))
+                msg_out.put(get_param(code, i, modes.pop()))
         elif opcode in (OpCode.JUMP_IF_TRUE, OpCode.JUMP_IF_FALSE):
             # maybe jump to the address represented by the next param
             val1 = get_param(code, i+1, modes.pop())
@@ -98,7 +104,7 @@ def intcode(code, input_vals):
         else:
             raise ValueError('Do not recognize code {} at index {}'.format(opcode, i))
         i += 1
-    return output
+    return
 
 
 if __name__ == '__main__':
@@ -107,7 +113,15 @@ if __name__ == '__main__':
     with open(fp) as f:
         code = [int(x) for x in f.read().strip().split(',')]
 
-    output = intcode(code, [input_val])
+
+    in_msg = SimpleQueue()
+    in_msg.put(input_val)
+    out_msg = SimpleQueue()
+    intcode(code, in_msg, out_msg)
+    output = []
+    while not out_msg.empty():
+        output.append(out_msg.get())
+
     for val in output[:-1]:
         if val != 0:
             print('Houston, we have a problem')
