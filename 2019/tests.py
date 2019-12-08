@@ -8,6 +8,7 @@ from aoc import day4_password as d4
 from aoc import day5_diagnostic as d5
 from aoc import day6_orbit_checksum as d6
 from aoc import day7_amp_circuit as d7
+from aoc import day8_space_image_format as d8
 
 class AOCTest(unittest.TestCase):
 
@@ -76,6 +77,7 @@ class AOCTest(unittest.TestCase):
                   'G)H', 'D)I', 'E)J', 'J)K', 'K)L', 'K)YOU', 'I)SAN']
         self.assertEqual(d6.min_orbital_transfers(orbits), 4)
 
+    @unittest.skip('These are slow, renable if messing with intcode')
     def test_d7_amp_circuit(self):
         # phase setting sequence 4,3,2,1,0
         code = [3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0]
@@ -102,3 +104,9 @@ class AOCTest(unittest.TestCase):
                 -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,
                 53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10]
         self.assertEqual(d7.max_thruster_signal(code, feedback=True), 18216)
+
+    def test_d8_space_image_format(self):
+        code = '123456789012'
+        width, height = 3, 2
+        expected = [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [0, 1, 2]]]
+        self.assertEqual(d8.layers(code, width, height), expected)
