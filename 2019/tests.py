@@ -115,3 +115,18 @@ class AOCTest(unittest.TestCase):
         width, height = 2, 2
         layers = d8.build_layers(code, width, height)
         self.assertEqual(d8.flatten_layers(layers), [[0, 1], [1, 0]])
+
+    def test_d9_sensor_boost(self):
+        code = [109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99]
+        output = d5.intcode_helper(code)
+        self.assertEqual(output, code)
+
+        code = [1102,34915192,34915192,7,4,7,99,0]
+        output = d5.intcode_helper(code)
+        self.assertEqual(len(output), 1)
+        self.assertEqual(len(str(output[0])), 16)
+
+        code = [104,1125899906842624,99]
+        output = d5.intcode_helper(code)
+        self.assertEqual(len(output), 1)
+        self.assertEqual(output[0], 1125899906842624)
