@@ -10,6 +10,7 @@ from aoc import day6_orbit_checksum as d6
 from aoc import day7_amp_circuit as d7
 from aoc import day8_space_image_format as d8
 from aoc import day10_monitoring_station as d10
+from aoc import day11_paint_robot as d11
 
 class AOCTest(unittest.TestCase):
 
@@ -221,3 +222,11 @@ class AOCTest(unittest.TestCase):
         self.assertEqual(results[199], (8,2))
         self.assertEqual(results[200], (10,9))
         self.assertEqual(results[298], (11,1))
+
+    def test_d11_painting_robot(self):
+        robot = d11.PaintRobot() 
+        inbox, outbox = robot.start()
+        for x in [1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0]:
+            inbox.put(x)
+        robot.stop()
+        self.assertEqual(len(robot.painted()), 6)
