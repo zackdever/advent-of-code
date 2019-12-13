@@ -207,3 +207,17 @@ class AOCTest(unittest.TestCase):
         coordinate, detected = d10.best_line_of_sight(asteroid_map)
         self.assertEqual(coordinate, (11, 13))
         self.assertEqual(detected, 210)
+
+        results = d10.spiral_order(asteroid_map, coordinate)
+        print('1st {}'.format(results[0]))
+        print('2nd {}'.format(results[1]))
+        print('3rd {}'.format(results[2]))
+        print('10th {}'.format(results[9]))
+        # The 20th asteroid to be vaporized is at 16,0.
+# The 50th asteroid to be vaporized is at 16,9.
+# The 100th asteroid to be vaporized is at 10,16.
+# The 199th asteroid to be vaporized is at 9,6.
+        print('200th {}'.format(results[199]))
+# The 200th asteroid to be vaporized is at 8,2.
+# The 201st asteroid to be vaporized is at 10,9.
+        print('299th {}'.format(results[298]))
