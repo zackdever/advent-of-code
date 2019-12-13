@@ -27,21 +27,46 @@ class Direction(IntEnum):
 
 
 class PaintRobot:
-    def __init__(self):
+    def __init__(self, initial_color=Colors.default()):
+        """
+        The intial color is only for the *first* panel,
+        not the default color for all panels.
+        """
         self.direction = Direction.UP
         self.squares = {}
         self.pos = (0, 0)
-        self.squares[self.pos] = None
+        self.squares[self.pos] = initial_color
         self._mailman = None
         self._inbox = None
         self._outbox = None
 
-    def current_color(self):
-        if self.squares[self.pos] is None:
-            return Colors.default()
-        return self.squares[self.pos]
+    def print_hull(self):
+        coord = self.pos
+        min_x, min_y = self.pos[0], self.pos[1]
+        max_x, max_y = self.pos[0], self.pos[1]
 
-    def paint(self, color):
+        for x, y in self.squares:
+            min_x = min(x, min_x)
+            min_y = min(y, min_y)
+            max_x = max(x, max_x)
+            max_y = max(y, max_y)
+
+        for row in range(max_y, min_y-1, -1):
+            rowstr = ''
+            for panel in range(min_x, max_x+1):
+                color = self._color_at((panel, row))
+                rowstr += '\u2B1C' if color == Colors.WHITE else '\u2B1B'
+            print(rowstr)
+
+    def _color_at(self, pos):
+        if self.squares.get(pos) is None:
+            return Colors.default()
+        return self.squares[pos]
+
+    def current_color(self):
+        return self._color_at(self.pos)
+
+    def paint_panel(self, color):
         self.squares[self.pos] = color
 
     def turn_and_move(self, turn):
@@ -77,7 +102,7 @@ class PaintRobot:
         """
         Should not be called directly, but by start. Assumes setup is done.
         Input should be the color the robot is on.
-        Two outputs: 1) Color to paint the square it is on 2) 90 deg turn direction
+        Two outputs: 1) Color to paint the panel it is on 2) 90 deg turn direction
         Move forward 1 space after it turns
         """
         while True:
@@ -85,7 +110,7 @@ class PaintRobot:
             msg = self._inbox.get()
             if msg is None:
                 break
-            self.paint(msg)
+            self.paint_panel(msg)
             msg = self._inbox.get()
             if msg is None:
                 break
@@ -107,18 +132,18 @@ class PaintRobot:
         self._mailman.join()
 
 
-def mr_robot(code):
-    """
-    Return the count of unique panels it painted.
-    """
-    robot = PaintRobot()
+def mr_robot(code, initial_color=None):
+    robot = PaintRobot(initial_color=initial_color)
     inbox, outbox = robot.start()
     d5.intcode(code, outbox, inbox)
     robot.stop()
-    return len(robot.painted())
+    return robot
 
 if __name__ == '__main__':
     fp = './input/day11.txt'
     with open(fp) as f:
         code = [int(x) for x in f.read().strip().split(',')]
-    print('Unique panels painted: {}'.format(mr_robot(code)))
+    print('Unique panels painted: {}'.format(len(mr_robot(code).painted())))
+    print()
+    robot = mr_robot(code, initial_color=Colors.WHITE)
+    robot.print_hull()
