@@ -9,6 +9,7 @@ from aoc import day5_diagnostic as d5
 from aoc import day6_orbit_checksum as d6
 from aoc import day7_amp_circuit as d7
 from aoc import day8_space_image_format as d8
+from aoc import day10_monitoring_station as d10
 
 class AOCTest(unittest.TestCase):
 
@@ -130,3 +131,79 @@ class AOCTest(unittest.TestCase):
         output = d5.intcode_helper(code)
         self.assertEqual(len(output), 1)
         self.assertEqual(output[0], 1125899906842624)
+
+    def test_d10_monitoring_station(self):
+        asteroid_map = '.#..#\n' + \
+                       '.....\n' + \
+                       '#####\n' + \
+                       '....#\n' + \
+                       '...##\n'
+        coordinate, detected = d10.best_line_of_sight(asteroid_map)
+        self.assertEqual(coordinate, (3, 4))
+        self.assertEqual(detected, 8)
+
+        asteroid_map = '......#.#.\n' + \
+                       '#..#.#....\n' + \
+                       '..#######.\n' + \
+                       '.#.#.###..\n' + \
+                       '.#..#.....\n' + \
+                       '..#....#.#\n' + \
+                       '#..#....#.\n' + \
+                       '.##.#..###\n' + \
+                       '##...#..#.\n' + \
+                       '.#....####\n'
+        coordinate, detected = d10.best_line_of_sight(asteroid_map)
+        self.assertEqual(coordinate, (5, 8))
+        self.assertEqual(detected, 33)
+
+        asteroid_map = '#.#...#.#.\n' + \
+                       '.###....#.\n' + \
+                       '.#....#...\n' + \
+                       '##.#.#.#.#\n' + \
+                       '....#.#.#.\n' + \
+                       '.##..###.#\n' + \
+                       '..#...##..\n' + \
+                       '..##....##\n' + \
+                       '......#...\n' + \
+                       '.####.###.\n'
+        coordinate, detected = d10.best_line_of_sight(asteroid_map)
+        self.assertEqual(coordinate, (1, 2))
+        self.assertEqual(detected, 35)
+
+        asteroid_map = '.#..#..###\n' + \
+                       '####.###.#\n' + \
+                       '....###.#.\n' + \
+                       '..###.##.#\n' + \
+                       '##.##.#.#.\n' + \
+                       '....###..#\n' + \
+                       '..#.#..#.#\n' + \
+                       '#..#.#.###\n' + \
+                       '.##...##.#\n' + \
+                       '.....#.#..\n'
+        coordinate, detected = d10.best_line_of_sight(asteroid_map)
+        self.assertEqual(coordinate, (6, 3))
+        self.assertEqual(detected, 41)
+
+        asteroid_map = '.#..##.###...#######\n' + \
+                       '##.############..##.\n' + \
+                       '.#.######.########.#\n' + \
+                       '.###.#######.####.#.\n' + \
+                       '#####.##.#.##.###.##\n' + \
+                       '..#####..#.#########\n' + \
+                       '####################\n' + \
+                       '#.####....###.#.#.##\n' + \
+                       '##.#################\n' + \
+                       '#####.##.###..####..\n' + \
+                       '..######..##.#######\n' + \
+                       '####.##.####...##..#\n' + \
+                       '.#####..#.######.###\n' + \
+                       '##...#.##########...\n' + \
+                       '#.##########.#######\n' + \
+                       '.####.#.###.###.#.##\n' + \
+                       '....##.##.###..#####\n' + \
+                       '.#.#.###########.###\n' + \
+                       '#.#.#.#####.####.###\n' + \
+                       '###.##.####.##.#..##\n'
+        coordinate, detected = d10.best_line_of_sight(asteroid_map)
+        self.assertEqual(coordinate, (11, 13))
+        self.assertEqual(detected, 210)
