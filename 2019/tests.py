@@ -11,6 +11,8 @@ from aoc import day7_amp_circuit as d7
 from aoc import day8_space_image_format as d8
 from aoc import day10_monitoring_station as d10
 from aoc import day11_paint_robot as d11
+from aoc import day12_drops_of_jupiter as d12
+
 
 class AOCTest(unittest.TestCase):
 
@@ -230,3 +232,23 @@ class AOCTest(unittest.TestCase):
             inbox.put(x)
         robot.stop()
         self.assertEqual(len(robot.painted()), 6)
+
+    def test_d12_jupiters_moons(self):
+        lines = ['<x=-1, y=0, z=2>', '<x=2, y=-10, z=-7>',
+                 '<x=4, y=-8, z=8>', '<x=3, y=5, z=-1>']
+        positions = d12.parse(lines)
+        jupiter = d12.Jupiter(positions)
+        self.assertEqual(jupiter.time, 0)
+        self.assertEqual(jupiter.moons[0]['pos'], {'x': -1, 'y': 0, 'z': 2})
+        self.assertEqual(jupiter.moons[0]['vel'], {'x': 0, 'y': 0, 'z': 0})
+
+        jupiter.advance_time(1)
+        self.assertEqual(jupiter.time, 1)
+        self.assertEqual(jupiter.moons[0]['pos'], {'x': 2, 'y': -1, 'z': 1})
+        self.assertEqual(jupiter.moons[0]['vel'], {'x': 3, 'y': -1, 'z': -1})
+
+        jupiter.advance_time(9)
+        self.assertEqual(jupiter.time, 10)
+        self.assertEqual(jupiter.energy(), 179)
+        self.assertEqual(jupiter.moons[0]['pos'], {'x': 2, 'y': 1, 'z': -3})
+        self.assertEqual(jupiter.moons[0]['vel'], {'x': -3, 'y': -2, 'z': 1})
